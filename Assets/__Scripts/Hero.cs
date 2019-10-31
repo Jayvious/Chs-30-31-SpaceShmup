@@ -24,7 +24,9 @@ public class Hero : MonoBehaviour {
 
 
     //TODO: Add function delegate declaration
+    public delegate void WeaponFireDelegate();
 
+    public WeaponFireDelegate fireDelegate;
 
 
 	void Start()
@@ -37,7 +39,7 @@ public class Hero : MonoBehaviour {
         {
             Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
         }
-        //fireDelegate += TempFire;
+        fireDelegate += TempFire;
 
         // Reset the weapons to start _Hero with 1 blaster
         ClearWeapons();
@@ -61,16 +63,19 @@ public class Hero : MonoBehaviour {
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {                          
-            TempFire();                                                   
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{                          
+        //  TempFire();                                                   
+        //}
 
         //TODO: Replace the TempFire call with the weapon delgate call
         // Use the fireDelegate to fire Weapons
         // First, make sure the button is pressed: Axis("Jump")
         // Then ensure that fireDelegate isn't null to avoid an error
-
+        if (Input.GetAxis("Jump") == 1 && fireDelegate != null)
+        {
+            fireDelegate();
+        }
 
 
     }
